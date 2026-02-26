@@ -1,0 +1,54 @@
+name: Build Mac & Linux
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false # 한쪽이 실패해도 다른 쪽 빌드는 계속 진행
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      # 리눅스 환경에서 AppImage 빌드에 필요한 라이브러리 설치
+      - name: Install Linux deps
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2
+
+      # 빌드 실행 (아이콘 및 권한 에러 방지 설정 포함)
+      - name: Build App
+        run: npm run dist
+        env:
+          CI: true
+          # 배포 권한 에러 해결을 위해 토큰 추가
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 빌드된 결과물 업로드
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-build
+          path: |
+            dist/*.AppImage
+            dist/*.dmg
+            dist/*.zip
+            dist/*.exe

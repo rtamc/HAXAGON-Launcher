@@ -1,0 +1,23 @@
+# Custom Language File for Launcher Customizer
+
+[ejs.app]
+title = "HAN Launcher"
+
+[ejs.landing]
+mediaHomeURL = "https://haxagon-site.vercel.app/"
+mediaLinkURL = "#"
+mediaMapURL = "https://map.hakara.xyz"
+mediaGitHubURL = "https://github.com/rtamc"
+mediaXURL = "#"
+mediaInstagramURL = "#"
+mediaYouTubeURL = "#"
+mediaDiscordURL = "#"
+
+[ejs.settings]
+sourceGithubLink = "https://github.com/rtamc/HAN-Launcher"
+supportLink = "https://github.com/rtamc/HAN-Launcher/issues"
+
+[ejs.welcome]
+welcomeHeader = "HAN Launcher"
+welcomeDescription = "원래 이름이 HAXAGONLauncher 인데 너무길어서 줄인 새로운 이름."
+welcomeDescCTA = "이거 수정하는데 12일 걸림."
